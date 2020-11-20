@@ -1,0 +1,21 @@
+.header {
+    
+    
+}
+.heading{
+    margin:auto;
+    font-size:8rem;
+    color:white;
+    text-align: center;
+    text-transform: uppercase;
+    width:100vw;
+}
+.vs {
+    background: radial-gradient(#0990B5, black);
+   /* linear-gradient(to bottom right,#076984 40%, white 60%) bottom right,
+   linear-gradient(to bottom left, #076984 40%, white 60%) bottom left,
+   linear-gradient(to top left,  #076984 40%, white 60%) top left,
+   linear-gradient(to top right,   #076984 40%, white 60%) top right;*/
+   -webkit-background-clip: text;
+   -webkit-text-fill-color: transparent;
+}

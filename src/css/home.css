@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300&display=swap');
+
+.root{
+    font-family: 'Rajdhani', sans-serif;
+    color:#fff;
+    height:100vh;
+    width:100vw;
+    background: rgb(0,0,0);
+    background: -moz-linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(10,60,73,1) 100%);
+    background: -webkit-linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(10,60,73,1) 100%);
+    background: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(10,60,73,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#000000",endColorstr="#0a3c49",GradientType=1);
+}
+
+.bg-image{
+    position: absolute;
+    background-image: url('../images/map.png');
+    background-repeat: no-repeat;
+    background-size: 80%;
+    background-position: 50% 50%;
+    width:100vw;
+    height:100vh;
+}
+
+
+.graph{
+    
+}
+.graphImg{
+    display: block;
+    margin-top: 150px;
+    margin-left: 20vw;
+    width:1000px;
+}   
+
+
+.button-container{
+    
+    background-color:red;
+}
