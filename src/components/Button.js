@@ -4,7 +4,7 @@ import "./../css/button.css";
 const Button = () => (
     <React.Fragment>
         
-        <button className="btn" type="button"> BUTTON</button>
+        <button className="btn" type="button"> 1 month</button>
 
         
     </React.Fragment>

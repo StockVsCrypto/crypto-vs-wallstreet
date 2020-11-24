@@ -1,9 +1,6 @@
-.header {
-    
-    
-}
+
 .heading{
-    margin:auto;
+    margin:2rem auto;
     font-size:8rem;
     color:white;
     text-align: center;
@@ -18,4 +15,12 @@
    linear-gradient(to top right,   #076984 40%, white 60%) top right;*/
    -webkit-background-clip: text;
    -webkit-text-fill-color: transparent;
+}
+
+@media only screen and (max-width:900px) {
+    .heading {
+        font-size: 4rem;
+        margin:3rem auto 2rem auto;
+
+    }
 }

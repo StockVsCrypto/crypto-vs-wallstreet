@@ -4,7 +4,7 @@ import Button from "./../components/Button"
 import "./../css/reset.css";
 import "./../css/home.css";
 import Bg from "../images/map.png"
-import GrapthImg from "../images/graph.png"
+import GraphImg from "../images/graph.png"
 
 export default function Home() {
   return(
@@ -12,21 +12,20 @@ export default function Home() {
     
     <div className="root">
 
-      <div className="bg-image"/>
+      <div className="bg-image">
 
-      <Header />  
+        <Header />  
 
-      <div className="graph">
-        <img className="graphImg" src={GrapthImg} />
+        <div className="graph">
+          <img className="graphImg" src={GraphImg} />
+          <div className="button-container">
+            <Button />
+            <Button />
+            <Button />
+            <Button />
+          </div>
+        </div>
       </div>
-
-      <div className="button-container">
-        <Button />
-        <Button />
-        <Button />
-        <Button />
-      </div>
-
     </div>
     </React.Fragment>
     
