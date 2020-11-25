@@ -6,6 +6,7 @@ const willshireRatio = 1055; // Miljon Dollars in stock market (1 Willshire poin
 const skimStockData = (data) =>{
     let array = [];
     for (const [key, value] of Object.entries(data.values)) {
+        
         value = {"datetime":value.datetime,"close": value.close}
         array.push(value);
     }
@@ -38,11 +39,17 @@ const stockAPI = async (timeframe) => {
 
     
     const url = "https://api.twelvedata.com/time_series?symbol=W5000&interval=1day&outputsize="+outputSize+"&apikey=a467faa10a8d4c369bee33d8f2e07daf"
-    
     let response = await fetch(url)
         .then(response => (
             response.json())
-            .then(data => skimStockData(data))
+            .then(data => {
+                if(data.code!=200){
+                    console.log("API error: ");
+                    console.log(data)
+                }else{
+                    skimStockData(data)
+                }
+            })
             )
         .catch(error => {
             console.log("HOLY SHIT, Error occured! Run for your life!");
@@ -55,7 +62,7 @@ function daysInMonth (month, year) {
     return new Date(year, month, 0).getDate();
 }
 
-const cryptoAPI = async (timeframe) => {
+async function cryptoAPI (timeframe) {
     const today = new Date(); // set object
     let date = new Date();
     const todayDate = ""+date.getFullYear() +"-"+ (date.getMonth()+1) +"-"+ date.getDate();// date format
@@ -78,7 +85,7 @@ const cryptoAPI = async (timeframe) => {
     let response = await fetch(url)
     .then(response => (
         response.json())
-        .then(data => console.log(skimCryptoData(data)))
+        .then(data => skimCryptoData(data))
         )
     .catch(error => {
         console.log("HOLY SHIT, Error occured! Run for your life!");

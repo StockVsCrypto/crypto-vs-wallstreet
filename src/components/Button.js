@@ -1,15 +1,13 @@
 import React from 'react';
 import "./../css/button.css";
 
-const Button = () => (
+const Button = (props) => {
+    return(
     <React.Fragment>
         
-        <button className="btn" type="button"> 1 month</button>
-
-        
+    <button className="btn" type="button">{props.children}</button>    
     </React.Fragment>
-
-    
-);
+    )
+};
 
 export default Button;

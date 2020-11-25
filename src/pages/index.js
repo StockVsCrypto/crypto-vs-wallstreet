@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 import Header from "./../components/Header"
 import Button from "./../components/Button"
 import Graph from "./../components/Graph"
@@ -9,7 +9,27 @@ import GraphImg from "../images/graph.png"
 import api from "./../logic/api.js";
 
 export default function Home() {
-  let stockData = api.cryptoAPI("1m")
+  let cryptoData;
+  // const [cryptoData, setCryptoData] = useState(["Fruit", "Basketball"]);
+  // const [stockData, setStockData] = useState({ hits: [] });
+  useEffect(() => {
+    async function fetchData() {
+      // const stockResults = await api.stockAPI("1m");
+      const cryptoResults = await api.cryptoAPI("1m");
+      cryptoData = cryptoResults;
+      // console.log("TELETABIS");
+      // console.log(cryptoResults);
+      // setCryptoData({"kek":"lmao"});
+      // setCryptoData(["hello"])
+      // console.log(cryptoData);
+
+      // setCryptoData();
+      // console.log(cryptoData);
+    }
+    fetchData();
+  });
+    
+  
   return(
     <React.Fragment>
     
@@ -21,13 +41,13 @@ export default function Home() {
 
         <div className="graph">
           {/* <img className="graphImg" src={GraphImg} /> */}
-          <Graph/>
+          <Graph crypto={cryptoData}></Graph>
         </div>
         <div className="button-container">
-          <Button />
-          <Button />
-          <Button />
-          <Button />
+          <Button>7 days</Button>
+          <Button>1 month</Button>
+          <Button>6 months</Button>
+          <Button>1 year</Button>
         </div>
       </div>
 
