@@ -24,7 +24,7 @@ export default function Home() {
 
         <div className="graph">
           {/* <img className="graphImg" src={GraphImg} /> */}
-          <Graph timeframe = "1m"></Graph>
+          <Graph timeframe = "1y"></Graph>
         </div>
         <div className="button-container">
           <Button>7 days</Button>
