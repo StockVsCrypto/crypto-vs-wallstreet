@@ -122,7 +122,7 @@ export default function Graph(props) {
     return(
         <React.Fragment>
         {/* <div width="1030" height="600"> */}
-        <VictoryChart theme={ chartStyles } style={{ parent: { maxWidth: "80%", margin:"auto" } }}
+        <VictoryChart theme={ chartStyles } style={{ parent: { maxWidth: "8000%", margin:"auto" } }}
         width={1030} height={400}
         >
         <VictoryAxis label="Date" style={{

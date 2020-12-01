@@ -18,7 +18,7 @@ const addWeekends = (data) =>{ // Remove weekend gaps from stock market data
     // console.log(dateArray)
     let count = 0;
     data.forEach((element, i) => {
-        element.datetime = transformDayDate(element.datetime)
+        element.datetime = getReverseAPIDate(element.datetime)
 
         // console.log(element.datetime+" vs "+ dateArray[count]);
 
@@ -40,7 +40,7 @@ const addWeekends = (data) =>{ // Remove weekend gaps from stock market data
         if(new Date(element.datetime)>new Date(dateArray[count])){ // If we have found a gap day
             const diffTime = Math.abs(new Date(element.datetime) - new Date(dateArray[count]));
             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-            // console.log("GAP REACHED:")
+            // console.log("GAP REACHED(actual vs correct_array):")
             // console.log(element.datetime+" vs "+ dateArray[count]);
             for(let i = 0;i<diffDays;i++){ // Loop through all days in the gap
                 newData.push({...newData[count-1], "datetime":dateArray[count]})
@@ -65,12 +65,26 @@ const addWeekends = (data) =>{ // Remove weekend gaps from stock market data
     // console.log(newData)
     return newData;
 }
-const transformDayDate = (date)=>{ // Transforms the dates that are ex: 2020-11-09 -> 2020-11-9
-    if(date.charAt(date.length - 2) == "0"){
-        return date.substring(0, date.length-2)+date.charAt(date.length-1);
+const getReverseAPIDate = (date)=>{ // Transforms the dates that are ex: 2020-08-09 -> 2020-8-9
+    let splitDate = date.split("-")
+    if(splitDate[1].length>1 && splitDate[1].charAt(0)=="0"){
+        splitDate[1] = splitDate[1].charAt(1);
+    }
+    if(splitDate[2].length>1 && splitDate[2].charAt(0)=="0"){
+        splitDate[2] =  splitDate[2].charAt(1);
+    }
+
+    return splitDate[0]+"-"+splitDate[1]+"-"+splitDate[2];
+    
+}
+const getAPIDate = (date) =>{ // Transforms dates from ex: 2020-5-1 => 2020-05-01
+    if(date.charAt(date.length - 2) == "-"){ // Add zero to start of 'day' value
+        date = date.substring(0, date.length-1)+"0"+date.charAt(date.length-1);
+    }
+    if(date.charAt(date.length - 5) == "-"){
+        date = date.substring(0, date.length-4)+"0"+date.substring(date.length-4);
     }
     return date;
-    
 }
 
 const skimStockData = (data) =>{
@@ -90,24 +104,16 @@ const skimCryptoData = (data)=>{
     // console.log(data);
     let array = [];
     // data = data.reverse()
-    let prevVal = data[0].volume;
+    let prevVal = data[0].market_cap;
     for (const [key, value] of Object.entries(data)) {
-        value = {"x":transformDayDate(value.timestamp.slice(0,-10)),"y": ((value.volume-prevVal)/prevVal)*100}
+        value = {"x":getReverseAPIDate(value.timestamp.slice(0,-10)),"y": ((value.market_cap-prevVal)/prevVal)*100}
         array.push(value);
     }
     // console.log(array)
     return array;
 }
 
-const getAPIDate = (date) =>{ // Transforms dates from ex: 2020-5-1 => 2020-05-01
-    if(date.charAt(date.length - 2) == "-"){ // Add zero to start of 'day' value
-        date = date.substring(0, date.length-1)+"0"+date.charAt(date.length-1);
-    }
-    if(date.charAt(date.length - 5) == "-"){
-        date = date.substring(0, date.length-4)+"0"+date.substring(date.length-4);
-    }
-    return date;
-}
+
 
 const stockAPI = async (timeframe) => {
 
@@ -118,9 +124,9 @@ const stockAPI = async (timeframe) => {
     } else if (timeframe.toLowerCase() === "1m"){        
         outputSize = 31;
     } else if (timeframe.toLowerCase() === "6m"){        
-        outputSize = 31*6;
+        outputSize = 30*6+1; // +1 fixed a bug
     } else if (timeframe.toLowerCase() === "1y"){        
-        outputSize = 31*12;
+        outputSize = 30*12+1; // +1 fixed a bug
     }
     
     const url = "https://api.twelvedata.com/time_series?symbol=W5000&interval=1day&outputsize="+outputSize+"&apikey=a467faa10a8d4c369bee33d8f2e07daf"
@@ -151,28 +157,30 @@ function daysInMonth (month, year) {
 }
 
 async function cryptoAPI (timeframe) {
+    
     const today = new Date(); // set object
     let date = new Date();
-    const todayDate = ""+date.getFullYear() +"-"+ (date.getMonth()+1) +"-"+ date.getDate();// date format
+
     let startDate;
     date.setDate(today.getDate()-1);
     let endDate = ""+date.getFullYear() +"-"+ (date.getMonth()+1) +"-"+ date.getDate(); // Yesterdays date
     let url;
-
     if(timeframe.toLowerCase() === "7d"){
-        date.setDate(today.getDate()-7);
+
+        date.setDate(date.getDate()-6); // Changed it from today.getDate() -7 => date.getDate() -8 , this fixed a bug on 1 Dec
+
     } else if (timeframe.toLowerCase() === "1m"){        
-        date.setDate(today.getDate()-31);
+        date.setDate(date.getDate()-30);
     } else if (timeframe.toLowerCase() === "6m"){        
-        date.setDate(today.getDate()-31*6);
+        date.setDate(date.getDate()-30*6);
     } else if (timeframe.toLowerCase() === "1y"){        
-        date.setDate(today.getDate()-31*12);
+        date.setDate(date.getDate()-30*12);
     }
     startDate = ""+date.getFullYear() +"-"+ (date.getMonth()+1) +"-"+ date.getDate();
     startDate = getAPIDate(startDate);
     endDate = getAPIDate(endDate);
 
-    url = "https://api.nomics.com/v1/volume/history?key=cb20c6e35d1b2f873402d249f2c145cf&start="+startDate+"T00%3A00%3A00Z&end="+endDate+"T00%3A00%3A00Z&convert=USD"
+    url = "https://api.nomics.com/v1/market-cap/history?key=cb20c6e35d1b2f873402d249f2c145cf&start="+startDate+"T00%3A00%3A00Z&end="+endDate+"T00%3A00%3A00Z&convert=USD"
     let response = await fetch(url)
     .then(response => (
         response.json())
@@ -186,7 +194,7 @@ async function cryptoAPI (timeframe) {
         console.log(error);
     });
     console.log(response)
-    console.log(startDate+" - "+endDate);
+    // console.log(startDate+" - "+endDate);
     return response;
 };
 export default {
