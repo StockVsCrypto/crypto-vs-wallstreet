@@ -98,19 +98,27 @@ export default function Graph(props) {
     const [isLoading, setLoading] = useState(true);
     const [cryptoData, setCryptoData] = useState([]);
     const [stockData, setStockData] = useState([]);
+    const [overtake, setOvertake] = useState(); // The date that crypto overtakes stocks
+    const [remount, setRemount] = useState(0); // Used for running useEffect again.
 
     async function fetchData(fetchFunction, callbackFunction) { // Fetches from the API
-        await fetchFunction(timeframe).then((response) =>{
+        const res = await fetchFunction(timeframe).then((response) =>{
             callbackFunction(response)
+            return response;
         });
+        return res
     }
-
     useEffect(() => {
         setLoading(true);
-        fetchData(api.cryptoAPI, setCryptoData);
-        fetchData(api.stockAPI, setStockData);
+            fetchData(api.cryptoAPI, setCryptoData).then((cryptoRes)=>{
+                fetchData(api.stockAPI, setStockData).then((stockRes)=>{
+                    const date = api.calculateOvertake(stockRes, cryptoRes)
+                    setOvertake(date)
+                    console.log("Overtake date: "+date)
+                })
+        });
         setLoading(false);
-    }, []); // This empty array fixed the bug where useEffect() was constantly rerunning.
+    }, [remount]); // When the variable(s) in this array are changed, useEffect will be running again
     if(isLoading){ // If we are still loading the data from API
         return(
             <div style={{width: "60vw", margin: "auto", fontSize:"150px"}}>
@@ -122,7 +130,7 @@ export default function Graph(props) {
     return(
         <React.Fragment>
         {/* <div width="1030" height="600"> */}
-        <VictoryChart theme={ chartStyles } style={{ parent: { maxWidth: "8000%", margin:"auto" } }}
+        <VictoryChart theme={ chartStyles } style={{ parent: { maxWidth: "80%", margin:"auto" } }}
         width={1030} height={400}
         >
         <VictoryAxis label="Date" style={{

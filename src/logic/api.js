@@ -94,7 +94,7 @@ const skimStockData = (data) =>{
     // console.log(data)
     let prevVal = data[0].close;
     data.forEach((element, i) => {
-        element = {"x":element.datetime,"y": ((element.close-prevVal)/prevVal)*100}
+        element = {"x":element.datetime,"y": ((element.close-prevVal)/prevVal)*100, "market_cap":""+(element.close*willshireRatio*1000000)}
         array.push(element);
     })
     // console.log(array)
@@ -106,14 +106,30 @@ const skimCryptoData = (data)=>{
     // data = data.reverse()
     let prevVal = data[0].market_cap;
     for (const [key, value] of Object.entries(data)) {
-        value = {"x":getReverseAPIDate(value.timestamp.slice(0,-10)),"y": ((value.market_cap-prevVal)/prevVal)*100}
+        value = {"x":getReverseAPIDate(value.timestamp.slice(0,-10)),"y": ((value.market_cap-prevVal)/prevVal)*100, "market_cap":value.market_cap}
         array.push(value);
     }
     // console.log(array)
     return array;
 }
 
+const calculateOvertake = (stockData, cryptoData)=>{ // Caluculates the overtake date
+    const sDailyGrowth = (parseFloat(stockData[stockData.length-1].y) / stockData.length)/100
+    const cDailyGrowth = (parseFloat(cryptoData[cryptoData.length-1].y) / cryptoData.length)/100
+    let sMarketCap = parseInt(stockData[stockData.length-1].market_cap)
+    let cMarketCap = parseInt(cryptoData[cryptoData.length-1].market_cap)
+    if(cDailyGrowth<=sDailyGrowth) return null; // Crypto will never overtake
+    let dayCounter = 0; // The number of days that it takes for the overtake
+    while(cMarketCap<sMarketCap){
+        sMarketCap +=(sMarketCap*sDailyGrowth)
+        cMarketCap +=(cMarketCap*cDailyGrowth)
+        dayCounter++;
+    }
+    const date = new Date();
+    date.setDate(date.getDate()+dayCounter) // Get the date
+    return ""+date.getFullYear() +"-"+ (date.getMonth()+1) +"-"+ date.getDate()
 
+}
 
 const stockAPI = async (timeframe) => {
 
@@ -150,11 +166,6 @@ const stockAPI = async (timeframe) => {
     console.log(response);
     return response;
 };
-
-
-function daysInMonth (month, year) {
-    return new Date(year, month, 0).getDate();
-}
 
 async function cryptoAPI (timeframe) {
     
@@ -199,5 +210,6 @@ async function cryptoAPI (timeframe) {
 };
 export default {
         stockAPI, 
-        cryptoAPI
+        cryptoAPI,
+        calculateOvertake
 }
