@@ -120,6 +120,7 @@ const calculateOvertake = (stockData, cryptoData)=>{ // Caluculates the overtake
     let cMarketCap = parseInt(cryptoData[cryptoData.length-1].market_cap)
     if(cDailyGrowth<=sDailyGrowth) return null; // Crypto will never overtake
     let dayCounter = 0; // The number of days that it takes for the overtake
+    debugger
     while(cMarketCap<sMarketCap){
         sMarketCap +=(sMarketCap*sDailyGrowth)
         cMarketCap +=(cMarketCap*cDailyGrowth)

@@ -3,74 +3,7 @@ import React, { useState, useEffect } from "react"
 import { VictoryChart, VictoryTooltip, VictoryLabel, VictoryZoomContainer, VictoryLine, VictoryBrushContainer, VictoryAxis, VictoryVoronoiContainer } from 'victory';
 import api from "./../logic/api.js";
 
-export default function Graph(props) {    
-    // const data1 = [
-    //     { x: 1, y: 2 },
-    //     { x: 2, y: 3 },
-    //     { x: 3, y: 5 },
-    //     { x: 4, y: 4 },
-    //     { x: 5, y: 7 },
-    //     { x: 6, y: 6 },
-    //     { x: 7, y: 9 },
-    //     { x: 8, y: 11 },
-    //     { x: 9, y: 8 },
-    //     { x: 10, y: 9 },
-    //     { x: 11, y: 12 },
-    //     { x: 12, y: 11 },
-    //     { x: 13, y: 9 },
-    //     { x: 14, y: 14 },
-    //     { x: 15, y: 16 },
-    //     { x: 16, y: 13 },
-    //     { x: 17, y: 15 },
-    //     { x: 18, y: 10 },
-    //     { x: 19, y: 19 },
-    //     { x: 20, y: 17 },
-    //     { x: 20, y: 17 },
-    //     { x: 21, y: 21 },
-    //     { x: 22, y: 22 },
-    //     { x: 23, y: 20 },
-    //     { x: 24, y: 25 },
-    //     { x: 25, y: 18 },
-    //     { x: 26, y: 25 },
-    //     { x: 27, y: 26 },
-    //     { x: 28, y: 23 },
-    //     { x: 29, y: 24 },
-    //     { x: 30, y: 30 },
-    // ];
-    
-    // const data2 = [
-    //     { x: 1, y: 1 },
-    //     { x: 2, y: 2 },
-    //     { x: 3, y: 5 },
-    //     { x: 4, y: 3 },
-    //     { x: 5, y: 4 },
-    //     { x: 6, y: 7 },
-    //     { x: 7, y: 8 },
-    //     { x: 8, y: 12 },
-    //     { x: 9, y: 10 },
-    //     { x: 10, y: 10 },
-    //     { x: 11, y: 11 },
-    //     { x: 12, y: 13 },
-    //     { x: 13, y: 9 },
-    //     { x: 14, y: 6 },
-    //     { x: 15, y: 12 },
-    //     { x: 16, y: 15 },
-    //     { x: 17, y: 15 },
-    //     { x: 18, y: 16 },
-    //     { x: 19, y: 14 },
-    //     { x: 20, y: 20 },
-    //     { x: 20, y: 17 },
-    //     { x: 21, y: 19 },
-    //     { x: 22, y: 21 },
-    //     { x: 23, y: 23 },
-    //     { x: 24, y: 25 },
-    //     { x: 25, y: 27 },
-    //     { x: 26, y: 28 },
-    //     { x: 27, y: 27 },
-    //     { x: 28, y: 22 },
-    //     { x: 29, y: 24 },
-    //     { x: 30, y: 27 },
-    // ];
+export default function Graph(props) {
     
     const chartStyles = {
         axis: {
@@ -139,7 +72,10 @@ export default function Graph(props) {
                 stroke: 'none',
               },
               axisLabel: { ...chartStyles.axisLabel, padding: 35 }
-            }}
+            }
+            
+        }
+        tickCount="10"
         />
         
         <VictoryAxis dependentAxis style={{
@@ -149,8 +85,7 @@ export default function Graph(props) {
               },
               axisLabel: { ...chartStyles.axisLabel, padding: 35 }
             }}
-            label="# of players"
-        label="Volume growth (%)" 
+        label="Market growth (%)" 
         />
         
         <VictoryLine
