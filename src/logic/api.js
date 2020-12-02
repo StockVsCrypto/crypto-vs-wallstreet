@@ -1,4 +1,4 @@
-
+import dao from "./../logic/dao.js";
 // Website displaying "Total Market Value of U.S. Stock Market"
 //https://siblisresearch.com/data/us-stock-market-value/#:~:text=The%20total%20market%20capitalization%20of,9%2F30%2F2020).
 const willshireRatio = 1055; // Miljon Dollars in stock market (1 Willshire point = 1055 miljon $ in stock market)
@@ -120,7 +120,6 @@ const calculateOvertake = (stockData, cryptoData)=>{ // Caluculates the overtake
     let cMarketCap = parseInt(cryptoData[cryptoData.length-1].market_cap)
     if(cDailyGrowth<=sDailyGrowth) return null; // Crypto will never overtake
     let dayCounter = 0; // The number of days that it takes for the overtake
-    debugger
     while(cMarketCap<sMarketCap){
         sMarketCap +=(sMarketCap*sDailyGrowth)
         cMarketCap +=(cMarketCap*cDailyGrowth)
@@ -130,6 +129,35 @@ const calculateOvertake = (stockData, cryptoData)=>{ // Caluculates the overtake
     date.setDate(date.getDate()+dayCounter) // Get the date
     return ""+date.getFullYear() +"-"+ (date.getMonth()+1) +"-"+ date.getDate()
 
+}
+
+const callAPI = async (timeframe) =>{
+    const today = new Date();
+    const todayDate = ""+today.getFullYear() +"-"+ (today.getMonth()+1) +"-"+ today.getDate();
+    let sData;
+    let cData;
+    if(dao.getDate() == todayDate){ // The today storage exists
+        const storeData = dao.getTF(timeframe);
+        // console.log(storeData)
+        if(storeData == null){
+            // console.log("TF NON EXISTANT, GETTING FROM API")
+            sData = await stockAPI(timeframe);
+            cData = await cryptoAPI(timeframe);
+            dao.setTF(timeframe, sData, cData)
+        }else{ // The TF exists already in local storage
+            // console.log("TF ACTUALY FOUNT, GETTING FROM LOCAL STORAGE")
+            sData = storeData.sData;
+            cData = storeData.cData;
+        }
+
+    }else{ // The local storage is empty
+        sData = await stockAPI(timeframe);
+        cData = await cryptoAPI(timeframe);
+        dao.createNew(todayDate, sData, cData, timeframe)
+    }
+
+
+    return {stockData: sData, cryptoData: cData}
 }
 
 const stockAPI = async (timeframe) => {
@@ -171,6 +199,8 @@ const stockAPI = async (timeframe) => {
 async function cryptoAPI (timeframe) {
     
     const today = new Date(); // set object
+
+
     let date = new Date();
 
     let startDate;
@@ -212,5 +242,6 @@ async function cryptoAPI (timeframe) {
 export default {
         stockAPI, 
         cryptoAPI,
-        calculateOvertake
+        calculateOvertake,
+        callAPI
 }

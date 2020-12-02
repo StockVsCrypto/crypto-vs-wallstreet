@@ -5,7 +5,7 @@ const Button = (props) => {
     return(
     <React.Fragment>
         
-    <button className="btn" type="button">{props.children}</button>    
+    <button onClick={props.clickFunc}className="btn" type="button" id={props.id}>{props.children}</button>    
     </React.Fragment>
     )
 };

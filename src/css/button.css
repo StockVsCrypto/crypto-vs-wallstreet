@@ -6,6 +6,7 @@
     padding: 1rem;
     border-radius: 15px;
     border:none;
+    font-family: 'Rajdhani', sans-serif;
 }
 
 .btn:hover {
@@ -24,4 +25,17 @@
     .button-container {
         margin-left: 1rem;
     }
+}
+
+/* 
+text misha added now */
+
+
+@media only screen and (max-width:600px) {
+    
+    .btn {
+        padding: 0.5rem;
+        margin: 0 0.5rem;
+    }
+
 }

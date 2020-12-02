@@ -1,9 +1,14 @@
 
 import React, { useState, useEffect } from "react"
+import {useRef} from 'react';
+import Button from "./../components/Button"
+import "./../css/home.css";
+
 import { VictoryChart, VictoryTooltip, VictoryLabel, VictoryZoomContainer, VictoryLine, VictoryBrushContainer, VictoryAxis, VictoryVoronoiContainer } from 'victory';
 import api from "./../logic/api.js";
 
 export default function Graph(props) {
+
     
     const chartStyles = {
         axis: {
@@ -13,6 +18,7 @@ export default function Graph(props) {
                     fontSize: '14px',
                     fontFamily: 'Rajdhani',
                     padding: 10,
+                    textShadow: '2px 4px 10px black',
                 },
                 axis: { 
                     stroke: '#015A72', 
@@ -21,37 +27,52 @@ export default function Graph(props) {
                     fill: 'white',
                     fontSize: '14px',
                     fontFamily: 'Rajdhani',
-                    textAnchor: 'bottom'
+                    // textAnchor: 'bottom',
+                    textShadow: '2px 4px 10px black',
                 },
             },
         },
     }
-
-    const timeframe = props.timeframe;
+    const [timeframe, setTimeframe] = useState(props.timeframe);
     const [isLoading, setLoading] = useState(true);
     const [cryptoData, setCryptoData] = useState([]);
     const [stockData, setStockData] = useState([]);
     const [overtake, setOvertake] = useState(); // The date that crypto overtakes stocks
-    const [remount, setRemount] = useState(0); // Used for running useEffect again.
 
-    async function fetchData(fetchFunction, callbackFunction) { // Fetches from the API
+    let btnContainerRef = useRef();
+
+    const changeTF = (e)=>{
+        if(!isLoading) {
+            // setLoading(true);
+            if(timeframe != e.target.id) {
+                btnContainerRef.current.style.pointerEvents = "none";
+
+                setTimeframe(e.target.id)
+            }
+        }
+        // setRemount(remount+1)
+    }
+    async function fetchData(fetchFunction) { // Fetches from the API
         const res = await fetchFunction(timeframe).then((response) =>{
-            callbackFunction(response)
+            setStockData(response.stockData)
+            setCryptoData(response.cryptoData)
             return response;
         });
         return res
     }
     useEffect(() => {
         setLoading(true);
-            fetchData(api.cryptoAPI, setCryptoData).then((cryptoRes)=>{
-                fetchData(api.stockAPI, setStockData).then((stockRes)=>{
-                    const date = api.calculateOvertake(stockRes, cryptoRes)
-                    setOvertake(date)
-                    console.log("Overtake date: "+date)
-                })
-        });
+        fetchData(api.callAPI).then((res)=>{
+            const date = api.calculateOvertake(res.stockData, res.cryptoData)
+            setOvertake(date)
+            console.log("Overtake date: "+date)
+        })
+        if(btnContainerRef.current !=null){
+            btnContainerRef.current.style.pointerEvents = "auto";
+
+        }
         setLoading(false);
-    }, [remount]); // When the variable(s) in this array are changed, useEffect will be running again
+    }, [timeframe]); // When the variable(s) in this array are changed, useEffect will be running again
     if(isLoading){ // If we are still loading the data from API
         return(
             <div style={{width: "60vw", margin: "auto", fontSize:"150px"}}>
@@ -62,9 +83,22 @@ export default function Graph(props) {
     
     return(
         <React.Fragment>
-        {/* <div width="1030" height="600"> */}
-        <VictoryChart theme={ chartStyles } style={{ parent: { maxWidth: "80%", margin:"auto" } }}
+        <div className="dueDate">
+        <p className="dueDateText">Due date <span className="crypto">crypto</span> market overtake <span className="wallstreet">Wallstreet</span></p>
+        <p className="dueDateDate">2020-10-20</p>
+        </div>
+
+        <VictoryChart theme={ chartStyles } style={{ parent: { maxWidth: "100%", margin:"auto" } }}
         width={1030} height={400}
+        // containerComponent={
+        //     <VictoryVoronoiContainer
+        //       voronoiDimension="x"
+        //       labels={() => `Wallstreet`}
+        //       labelComponent={
+        //         <VictoryTooltip
+        //           style={{fill: "white", fontSize: "14", fontFamily: "Rajdhani", textShadow: "2px 4px 10px black" }}
+        //         />}
+        //     />}
         >
         <VictoryAxis label="Date" style={{
               ...chartStyles,
@@ -75,7 +109,7 @@ export default function Graph(props) {
             }
             
         }
-        tickCount="10"
+        tickCount={10}
         />
         
         <VictoryAxis dependentAxis style={{
@@ -87,23 +121,35 @@ export default function Graph(props) {
             }}
         label="Market growth (%)" 
         />
+
+        {/* <VictoryLabel
+            text={`Due date crypto`}
+            x={850}
+            y={10}
+            // textAnchor="middle"
+            style={{fill: "white", fontSize: "16", fontFamily: "Rajdhani", textShadow: "2px 4px 10px black" }}
+          />
+
+        <VictoryLabel
+            text={`overtake Wallstreet`}
+            x={850}
+            y={28}
+            // textAnchor="middle"
+            style={{fill: "white", fontSize: "16", fontFamily: "Rajdhani", textShadow: "2px 4px 10px black" }}
+          />
+        
+          <VictoryLabel
+            text={`
+            2022-10-20`}
+            x={850}
+            y={50}
+            // textAnchor="middle"
+            style={{ fill: "red", fontSize: "30", fontFamily: "Rajdhani", fontWeight: "bold", textShadow: "2px 4px 10px black" }}
+          /> */}
         
         <VictoryLine
         style={{ data: { stroke: "#107C2E", strokeWidth: 2 }}}
         animate={{ duration: 2000 }} data={stockData}
-        labels={() => "HELLO"}
-        labelComponent={
-            <VictoryTooltip dy={0} centerOffset={{ x: 25 }} />
-        }
-        // labels={() => ["This is a", "multi-line", "label"]}
-        // labelComponent={
-        //     <VictoryLabel
-        //     backgroundStyle={{ fill: "pink" }}
-        //     backgroundPadding={3}
-        //     textAnchor="start"
-        //     verticalAnchor="middle"
-        //     />
-        // }
         />
         
         
@@ -114,6 +160,12 @@ export default function Graph(props) {
         />
 
         </VictoryChart>
+        <div className="button-container" ref={btnContainerRef}>
+          <Button clickFunc={changeTF} id="7d">7 days</Button>
+          <Button clickFunc={changeTF} id="1m">1 month</Button>
+          <Button clickFunc={changeTF} id="6m">6 months</Button>
+          <Button clickFunc={changeTF} id="1y">1 year</Button>
+        </div>
         {/* </div> */}
         </React.Fragment>
         );

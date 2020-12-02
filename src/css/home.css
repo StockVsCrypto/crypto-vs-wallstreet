@@ -24,11 +24,41 @@
     height:100vh;
 }
 
+.dueDate{
+    position: absolute;
+    width: 10vw;
+    margin-left:75vw;
+    text-align: center;
+}
+
+.dueDateText{
+    text-shadow: 2px 4px 10px black;
+    
+}
+
+.dueDateDate{
+    margin-top:1vh;
+    font-size: 30px;
+    color: red;
+    text-shadow: 2px 4px 10px black;
+}
+
+.crypto{
+    text-transform: uppercase;
+    color:#FFC700;
+    font-weight:bold;
+}
+
+.wallstreet{
+    text-transform: uppercase;
+    color:#107C2E;
+    font-weight:bold;
+}
 
 .graph{
-    width:100vw;
+    width:80vw;
     z-index:100;
-    margin:0px auto 0 auto;
+    margin:100px auto 0 auto;
     /* height:80vh; */
 }
 
@@ -48,10 +78,32 @@
 @media only screen and (max-width:900px) {
     .graph{
     margin:150px auto 0 auto;
+    width:100vw;
     }
     .graphImg{
         display: block;
         width:80vw;
         margin:auto;
+    }
+    .dueDate{
+        width:70vw;
+        position:absolute;
+        bottom:10vh;
+        right:10vw;
+    }
+    .dueDateText{
+        font-size: 30px;
+    }
+    .dueDateDate{
+        font-size: 30px;
+    }
+}
+
+@media only screen and (max-width:700px) {
+    .dueDate{
+        bottom:10vh;
+    }
+    .graph{
+        margin:0 auto 0 auto;
     }
 }

@@ -12,7 +12,13 @@ export default function Home() {
 
   // api.stockAPI("1m");
   // api.cryptoAPI("1m");
-  
+  const [, updateState] = useState();
+  const [timeFrame, setTimeFrame] = useState("1m")
+  const changeTF = (e)=>{
+    setTimeFrame(e.target.id);
+    console.log(timeFrame)
+  }
+
   return(
     <React.Fragment>
     
@@ -24,14 +30,9 @@ export default function Home() {
 
         <div className="graph">
           {/* <img className="graphImg" src={GraphImg} /> */}
-          <Graph timeframe = "1y"></Graph>
+          <Graph timeframe = {timeFrame}></Graph>
         </div>
-        <div className="button-container">
-          <Button>7 days</Button>
-          <Button>1 month</Button>
-          <Button>6 months</Button>
-          <Button>1 year</Button>
-        </div>
+
       </div>
 
       
