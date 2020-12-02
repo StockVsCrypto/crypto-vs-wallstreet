@@ -14,19 +14,25 @@
 }
 
 .bg-image{
-    position: absolute;
+    /* position: absolute; */
     z-index:0;
     background-image: url('../images/map.png');
     background-repeat: no-repeat;
     background-size: 80%;
     background-position: 50% 50%;
     width:100vw;
-    height:100vh;
+    min-height:100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.content{
+    flex: 1;
 }
 
 .dueDate{
     position: absolute;
-    width: 10vw;
+    width: 12vw;
     margin-left:75vw;
     text-align: center;
 }
@@ -38,7 +44,7 @@
 
 .dueDateDate{
     margin-top:1vh;
-    font-size: 30px;
+    font-size: 1rem;
     color: red;
     text-shadow: 2px 4px 10px black;
 }
@@ -59,7 +65,6 @@
     width:80vw;
     z-index:100;
     margin:100px auto 0 auto;
-    /* height:80vh; */
 }
 
 .graphImg{
@@ -76,6 +81,11 @@
 
 
 @media only screen and (max-width:900px) {
+    .dueDate{
+        width: 15vw;
+        top:25vh;
+        right:5vw;
+    }
     .graph{
     margin:150px auto 0 auto;
     width:100vw;
@@ -85,25 +95,26 @@
         width:80vw;
         margin:auto;
     }
-    .dueDate{
-        width:70vw;
-        position:absolute;
-        bottom:10vh;
-        right:10vw;
-    }
-    .dueDateText{
-        font-size: 30px;
-    }
-    .dueDateDate{
-        font-size: 30px;
-    }
 }
 
 @media only screen and (max-width:700px) {
     .dueDate{
-        bottom:10vh;
+        width:70vw;
+        top:80vh;
+        right:14vw;
+    }
+    .dueDateText{
+        font-size: 1.5rem;
+    }
+    .dueDateDate{
+        font-size: 1.5rem;
     }
     .graph{
-        margin:0 auto 0 auto;
+        margin:0 auto;
+    }
+}
+@media only screen and (max-width:500px) {
+    .dueDate{
+        top:70vh;
     }
 }

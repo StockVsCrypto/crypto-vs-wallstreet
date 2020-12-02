@@ -24,3 +24,9 @@
 
     }
 }
+
+@media only screen and (max-width:500px) {
+    .heading {
+        font-size: 3rem;
+    }
+}

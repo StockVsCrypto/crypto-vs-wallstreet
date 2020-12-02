@@ -1,0 +1,34 @@
+.footer{
+    width:100vw;
+    /* justify-content: flex-end;
+    display: flex; */
+    /* position: relative; */
+    bottom:0;
+}
+
+.links{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    text-align: center;
+    padding-bottom:0.2rem;
+}
+.links a{
+    color: rgba(1, 90, 114, 0.94);
+    text-decoration: none;
+    font-size: 14px;
+    margin-right:20px;
+}
+
+.footer a:hover{
+    color: white;
+    transition: all 0.5s;
+}
+
+@media only screen and (max-width:500px) {
+    .links{
+        grid-template-columns: repeat(1, 1fr);
+    }
+    .links a{
+        margin:0;
+    }
+}

@@ -4,7 +4,7 @@ import {useRef} from 'react';
 import Button from "./../components/Button"
 import "./../css/home.css";
 
-import { VictoryChart, VictoryTooltip, VictoryLabel, VictoryZoomContainer, VictoryLine, VictoryBrushContainer, VictoryAxis, VictoryVoronoiContainer } from 'victory';
+import { VictoryChart, VictoryLine, VictoryAxis} from 'victory';
 import api from "./../logic/api.js";
 
 export default function Graph(props) {
