@@ -34,6 +34,7 @@ export default function Graph(props) {
         },
     }
     const [timeframe, setTimeframe] = useState(props.timeframe);
+    const [selectedButton, setSelectedButton] = useState("1");
     const [isLoading, setLoading] = useState(true);
     const [cryptoData, setCryptoData] = useState([]);
     const [stockData, setStockData] = useState([]);
@@ -43,8 +44,9 @@ export default function Graph(props) {
 
     const changeTF = (e)=>{
         if(!isLoading) {
+
             // setLoading(true);
-            if(timeframe != e.target.id) {
+            if(timeframe != e.target.id) { // If the button is not the "already selected button"
                 btnContainerRef.current.style.pointerEvents = "none";
 
                 setTimeframe(e.target.id)
@@ -161,10 +163,10 @@ export default function Graph(props) {
 
         </VictoryChart>
         <div className="button-container" ref={btnContainerRef}>
-          <Button clickFunc={changeTF} id="7d">7 days</Button>
-          <Button clickFunc={changeTF} id="1m">1 month</Button>
-          <Button clickFunc={changeTF} id="6m">6 months</Button>
-          <Button clickFunc={changeTF} id="1y">1 year</Button>
+          <Button clickFunc={changeTF} id="7d" selected={timeframe}>7 days</Button>
+          <Button clickFunc={changeTF} id="1m" selected={timeframe}>1 month</Button>
+          <Button clickFunc={changeTF} id="6m" selected={timeframe}>6 months</Button>
+          <Button clickFunc={changeTF} id="1y" selected={timeframe}>1 year</Button>
         </div>
         {/* </div> */}
         </React.Fragment>
