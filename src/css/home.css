@@ -44,9 +44,10 @@
 
 .dueDateDate{
     margin-top:1vh;
-    font-size: 1rem;
+    font-size: 2rem;
     color: red;
     text-shadow: 2px 4px 10px black;
+    font-weight:bold;
 }
 
 .crypto{
@@ -80,6 +81,11 @@
 
 
 
+@media only screen and (max-width:1200px) {
+    .dueDateDate{
+        font-size: 1.5rem;
+    }
+}
 @media only screen and (max-width:900px) {
     .dueDate{
         width: 15vw;

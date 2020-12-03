@@ -84,8 +84,8 @@ export default function Graph(props) {
     return(
         <React.Fragment>
         <div className="dueDate">
-        <p className="dueDateText">Due date <span className="crypto">crypto</span> market overtake <span className="wallstreet">Wallstreet</span></p>
-        <p className="dueDateDate">2020-10-20</p>
+        <p className="dueDateText">Due date <span className="crypto">crypto</span> market overtake <span className="wallstreet">Wallstreet:</span></p>
+        <p className="dueDateDate">{overtake}</p>
         </div>
 
         <VictoryChart theme={ chartStyles } style={{ parent: { maxWidth: "100%", margin:"auto" } }}
