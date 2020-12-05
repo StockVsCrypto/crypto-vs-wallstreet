@@ -57,7 +57,7 @@ export default function Graph(props) {
     async function fetchData(fetchFunction) { // Fetches from the API
         const res = await fetchFunction(timeframe).then((response) =>{
             setStockData(response.stockData)
-            setCryptoData(response.cryptoData)
+            // setCryptoData(response.cryptoData)
             return response;
         });
         return res
@@ -65,9 +65,9 @@ export default function Graph(props) {
     useEffect(() => {
         setLoading(true);
         fetchData(api.callAPI).then((res)=>{
-            const date = api.calculateOvertake(res.stockData, res.cryptoData)
-            setOvertake(date)
-            console.log("Overtake date: "+date)
+            // const date = api.calculateOvertake(res.stockData, res.cryptoData)
+            // setOvertake(date)
+            // console.log("Overtake date: "+date)
         })
         if(btnContainerRef.current !=null){
             btnContainerRef.current.style.pointerEvents = "auto";

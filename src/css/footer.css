@@ -12,12 +12,19 @@
     text-align: center;
     padding-bottom:0.2rem;
 }
+
 .links a{
     color: rgba(1, 90, 114, 0.94);
     text-decoration: none;
     font-size: 14px;
     margin-right:20px;
 }
+.links .apiTag{
+    grid-column-start: 2;
+    grid-column-end: 4;
+    font-size: 12px;
+}
+
 
 .footer a:hover{
     color: white;
