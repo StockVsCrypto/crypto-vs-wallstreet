@@ -222,7 +222,7 @@ async function cryptoAPI (timeframe) {
     startDate = getAPIDate(startDate);
     endDate = getAPIDate(endDate);
 
-    url = "https://api.nomics.com/v1/market-cap/history?key=cb20c6e35d1b2f873402d249f2c145cf&start="+startDate+"T00%3A00%3A00Z&end="+endDate+"T00%3A00%3A00Z&convert=USD"
+    url = "https://api.nomics.com/v1/market-cap/history?key=3ce7056094d0911e4e85ca5b9c0dd461&start="+startDate+"T00%3A00%3A00Z&end="+endDate+"T00%3A00%3A00Z&convert=USD"
     let response = await fetch(url)
     .then(response => (
         response.json())
